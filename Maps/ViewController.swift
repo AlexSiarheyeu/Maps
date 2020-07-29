@@ -20,9 +20,9 @@ class ViewController: UIViewController {
         setupMapView()
         setupRegionForMap()
         setupAnnotationsForMap()
-        performLocalSearch()
         setupSearchUI()
-       
+        setupLocationCarousel()
+        
    }
 
     func setupMapView() {
@@ -70,14 +70,14 @@ class ViewController: UIViewController {
         mapView.showAnnotations(self.mapView.annotations, animated: true)
     }
     
+    var controller = MapsCollectionViewCarousel()
     func performLocalSearch() {
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = searchTextField.text
         request.region = mapView.region
-        
         let localSearch = MKLocalSearch(request: request)
         localSearch.start { (response, error) in
-            
+
             if let error = error {
                 print("Failed local search", error)
                 return
@@ -92,12 +92,16 @@ class ViewController: UIViewController {
                 annotation.coordinate = mapItem.placemark.coordinate
                 annotation.title = mapItem.name
                 self?.mapView.addAnnotation(annotation)
-                 
-            })
+                
+                self?.controller.item.append(mapItem)
+                })
+            
             self.mapView.showAnnotations(self.mapView.annotations, animated: true)
         }
     }
     
+    
+
     let searchTextField = MapsSearchField().buildSearchField()
 
     func setupSearchUI() {
@@ -118,6 +122,20 @@ class ViewController: UIViewController {
     
     @objc func handleSearchChanges() {
         performLocalSearch()
+    }
+    
+    func setupLocationCarousel() {
+        
+        let collectionCarousel = MapsCollectionViewCarousel()
+        
+        mapView.addSubview(collectionCarousel)
+        NSLayoutConstraint.activate([
+            collectionCarousel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionCarousel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionCarousel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -34),
+            collectionCarousel.heightAnchor.constraint(equalToConstant: 150)
+        ])
+   
     }
 }
 

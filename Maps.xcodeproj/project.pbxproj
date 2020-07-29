@@ -15,6 +15,7 @@
 		BC47B28524D042FF007C67D6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BC47B28324D042FF007C67D6 /* LaunchScreen.storyboard */; };
 		BC47B28D24D084B1007C67D6 /* MapsSearchField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC47B28C24D084B1007C67D6 /* MapsSearchField.swift */; };
 		BC47B29124D08CCA007C67D6 /* UITextField+Insets.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC47B29024D08CCA007C67D6 /* UITextField+Insets.swift */; };
+		BC47B29524D09930007C67D6 /* MapsPlacesCarousel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC47B29424D09930007C67D6 /* MapsPlacesCarousel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		BC47B28624D042FF007C67D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BC47B28C24D084B1007C67D6 /* MapsSearchField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapsSearchField.swift; sourceTree = "<group>"; };
 		BC47B29024D08CCA007C67D6 /* UITextField+Insets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Insets.swift"; sourceTree = "<group>"; };
+		BC47B29424D09930007C67D6 /* MapsPlacesCarousel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapsPlacesCarousel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				BC47B28E24D08CAC007C67D6 /* Utils */,
 				BC47B27C24D042FC007C67D6 /* ViewController.swift */,
 				BC47B28C24D084B1007C67D6 /* MapsSearchField.swift */,
+				BC47B29424D09930007C67D6 /* MapsPlacesCarousel.swift */,
 				BC47B28324D042FF007C67D6 /* LaunchScreen.storyboard */,
 				BC47B27E24D042FC007C67D6 /* Main.storyboard */,
 				BC47B29224D08D30007C67D6 /* Source */,
@@ -162,6 +165,7 @@
 			files = (
 				BC47B27D24D042FC007C67D6 /* ViewController.swift in Sources */,
 				BC47B27924D042FC007C67D6 /* AppDelegate.swift in Sources */,
+				BC47B29524D09930007C67D6 /* MapsPlacesCarousel.swift in Sources */,
 				BC47B29124D08CCA007C67D6 /* UITextField+Insets.swift in Sources */,
 				BC47B27B24D042FC007C67D6 /* SceneDelegate.swift in Sources */,
 				BC47B28D24D084B1007C67D6 /* MapsSearchField.swift in Sources */,
