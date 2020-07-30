@@ -68,17 +68,6 @@ class MainController: UIViewController {
     }
     
     private func setupAnnotationsForMap() {
-        
-        let annotation = MKPointAnnotation()
-        
-        annotation.coordinate = CLLocationCoordinate2D(
-                                    latitude: 53.893009,
-                                    longitude: 27.567444)
-        
-        annotation.title = "Minsk"
-        
-        mapView.addAnnotation(annotation)
-        
         mapView.showAnnotations(self.mapView.annotations, animated: true)
     }
     

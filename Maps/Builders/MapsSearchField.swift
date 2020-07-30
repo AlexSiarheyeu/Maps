@@ -9,16 +9,8 @@
 import UIKit
 
 class MapsSearchField {
-    
-    var placeholder: String
-    var backgroundColor: UIColor
-    
-    init() {
-        self.placeholder = "Search"
-        self.backgroundColor = .white
-    }
-    
-    func buildSearchField() -> UITextField {
+
+    func buildSearchField(placeholder: String = "Search", backgroundColor: UIColor = .white) -> UITextField {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.backgroundColor = backgroundColor
