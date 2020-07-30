@@ -9,23 +9,35 @@
 import UIKit
 import MapKit
 
-class ViewController: UIViewController {
+class MainController: UIViewController {
     
     let mapView = MKMapView()
 
+    let locationManager = CLLocationManager()
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         mapView.delegate = self
+        mapView.showsUserLocation = true
         
         setupMapView()
         setupRegionForMap()
         setupAnnotationsForMap()
         setupSearchUI()
         setupLocationCarousel()
+        requestUserLocation()
         
    }
-
-    func setupMapView() {
+    
+    private func  requestUserLocation() {
+        
+        locationManager.requestWhenInUseAuthorization()
+        
+        locationManager.delegate = self
+    }
+    
+    private func setupMapView() {
         
         view.addSubview(mapView)
         mapView.translatesAutoresizingMaskIntoConstraints = false
@@ -38,7 +50,7 @@ class ViewController: UIViewController {
         ])
     }
 
-    func setupRegionForMap() {
+    private func setupRegionForMap() {
         
         let location = CLLocationCoordinate2D(
                         latitude: 53.893009,
@@ -55,7 +67,7 @@ class ViewController: UIViewController {
         mapView.setRegion(region, animated: true)
     }
     
-    func setupAnnotationsForMap() {
+    private func setupAnnotationsForMap() {
         
         let annotation = MKPointAnnotation()
         
@@ -70,8 +82,9 @@ class ViewController: UIViewController {
         mapView.showAnnotations(self.mapView.annotations, animated: true)
     }
     
-    var controller = MapsCollectionViewCarousel()
-    func performLocalSearch() {
+    let controllerCarousel = MapsCollectionViewCarousel()
+    private func performLocalSearch() {
+        
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = searchTextField.text
         request.region = mapView.region
@@ -92,19 +105,17 @@ class ViewController: UIViewController {
                 annotation.coordinate = mapItem.placemark.coordinate
                 annotation.title = mapItem.name
                 self?.mapView.addAnnotation(annotation)
+               
+                //self?.controllerCarousel.items.append(mapItem)
                 
-                self?.controller.item.append(mapItem)
                 })
             
             self.mapView.showAnnotations(self.mapView.annotations, animated: true)
         }
     }
-    
-    
 
     let searchTextField = MapsSearchField().buildSearchField()
-
-    func setupSearchUI() {
+    private func setupSearchUI() {
         
         view.addSubview(searchTextField)
 
@@ -124,32 +135,18 @@ class ViewController: UIViewController {
         performLocalSearch()
     }
     
-    func setupLocationCarousel() {
+    private func setupLocationCarousel() {
         
         let collectionCarousel = MapsCollectionViewCarousel()
         
         mapView.addSubview(collectionCarousel)
+        
         NSLayoutConstraint.activate([
             collectionCarousel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionCarousel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionCarousel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -34),
             collectionCarousel.heightAnchor.constraint(equalToConstant: 150)
         ])
-   
     }
 }
 
-
-extension ViewController: MKMapViewDelegate {
-    
-    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        
-        let annotationView = MKPinAnnotationView(
-                             annotation:  annotation,
-                             reuseIdentifier: "id")
-        
-        annotationView.canShowCallout = true
-
-        return annotationView
-    }
-}
