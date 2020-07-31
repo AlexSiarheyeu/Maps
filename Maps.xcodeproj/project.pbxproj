@@ -16,6 +16,8 @@
 		BC3E267224D3FD6100FEC42D /* UIStackView+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3E267124D3FD6100FEC42D /* UIStackView+Init.swift */; };
 		BC3E267424D449CA00FEC42D /* NSAttributedString+CustomPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3E267324D449CA00FEC42D /* NSAttributedString+CustomPlaceholder.swift */; };
 		BC3E267624D4503D00FEC42D /* UIImageView+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3E267524D4503D00FEC42D /* UIImageView+Init.swift */; };
+		BC3E267824D4659200FEC42D /* LocationSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3E267724D4659200FEC42D /* LocationSearchController.swift */; };
+		BC3E267A24D4718700FEC42D /* MKMapItem+Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3E267924D4718700FEC42D /* MKMapItem+Address.swift */; };
 		BC47B27924D042FC007C67D6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC47B27824D042FC007C67D6 /* AppDelegate.swift */; };
 		BC47B27B24D042FC007C67D6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC47B27A24D042FC007C67D6 /* SceneDelegate.swift */; };
 		BC47B27D24D042FC007C67D6 /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC47B27C24D042FC007C67D6 /* MainController.swift */; };
@@ -38,6 +40,8 @@
 		BC3E267124D3FD6100FEC42D /* UIStackView+Init.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Init.swift"; sourceTree = "<group>"; };
 		BC3E267324D449CA00FEC42D /* NSAttributedString+CustomPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+CustomPlaceholder.swift"; sourceTree = "<group>"; };
 		BC3E267524D4503D00FEC42D /* UIImageView+Init.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Init.swift"; sourceTree = "<group>"; };
+		BC3E267724D4659200FEC42D /* LocationSearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchController.swift; sourceTree = "<group>"; };
+		BC3E267924D4718700FEC42D /* MKMapItem+Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MKMapItem+Address.swift"; sourceTree = "<group>"; };
 		BC47B27524D042FC007C67D6 /* Maps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Maps.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC47B27824D042FC007C67D6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BC47B27A24D042FC007C67D6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -83,6 +87,7 @@
 		BC3E266724D2DE9100FEC42D /* Directions Controller */ = {
 			isa = PBXGroup;
 			children = (
+				BC3E267724D4659200FEC42D /* LocationSearchController.swift */,
 				BC3E266824D2DEB300FEC42D /* DirectionsController.swift */,
 				BC3E266B24D35D0C00FEC42D /* DirectionController + Extensions */,
 			);
@@ -155,6 +160,7 @@
 				BC3E267124D3FD6100FEC42D /* UIStackView+Init.swift */,
 				BC3E267524D4503D00FEC42D /* UIImageView+Init.swift */,
 				BC3E267324D449CA00FEC42D /* NSAttributedString+CustomPlaceholder.swift */,
+				BC3E267924D4718700FEC42D /* MKMapItem+Address.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -251,7 +257,9 @@
 				BC3E266924D2DEB300FEC42D /* DirectionsController.swift in Sources */,
 				BC3E266E24D35D8800FEC42D /* DirectionsController+MapView.swift in Sources */,
 				BC3E267624D4503D00FEC42D /* UIImageView+Init.swift in Sources */,
+				BC3E267A24D4718700FEC42D /* MKMapItem+Address.swift in Sources */,
 				BC3E266524D2CBB500FEC42D /* MainController+MapView.swift in Sources */,
+				BC3E267824D4659200FEC42D /* LocationSearchController.swift in Sources */,
 				BC47B27B24D042FC007C67D6 /* SceneDelegate.swift in Sources */,
 				BC47B28D24D084B1007C67D6 /* MapsSearchField.swift in Sources */,
 				BC3E266324D2CB2D00FEC42D /* MainController+LocationManager.swift in Sources */,

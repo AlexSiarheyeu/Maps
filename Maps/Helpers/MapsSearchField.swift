@@ -22,6 +22,11 @@ class MapsSearchField {
         textField.setLeftPaddingPoints(8)
         textField.setRightPaddingPoints(8)
         
+        textField.layer.cornerRadius = 5
+        textField.textColor = .white
+        textField.font = UIFont.boldSystemFont(ofSize: 16)
+        textField.backgroundColor = .init(white: 1, alpha: 0.3)
+        
         return textField
     }
  

@@ -24,6 +24,13 @@ class DirectionsController: UIViewController {
         setupMapView()
         setupRegionForMap()
         requestForDirections()
+    
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.navigationBar.isHidden = true
 
     }
     
@@ -47,12 +54,7 @@ class DirectionsController: UIViewController {
             }
             
             guard let route = response?.routes.first else { return }
-            
-//            print(route.expectedTravelTime)
-//            print(route.distance)
-//            print(route.name)
-//            print(route.steps)
-            
+            //print(route.expectedTravelTime) print(route.distance) print(route.name) print(route.steps)
             self.mapView.addOverlay(route.polyline)
         }
     }
@@ -87,20 +89,28 @@ class DirectionsController: UIViewController {
         mapView.setRegion(region, animated: true)
     }
     
-    private func setupTextFields(firstTF: UITextField, secondTF: UITextField) {
+    private func setupTextFieldsView(firstTF: UITextField, secondTF: UITextField) {
         
         firstTF.attributedPlaceholder = NSAttributedString().createCustomPlaceholder(text: "Start", textColor: .white)
         secondTF.attributedPlaceholder = NSAttributedString().createCustomPlaceholder(text: "End", textColor: .white)
-
-        [firstTF, secondTF].forEach { (textField) in
-           textField.layer.cornerRadius = 5
-           textField.textColor = .white
-           textField.font = UIFont.boldSystemFont(ofSize: 16)
-           textField.backgroundColor = .init(white: 1, alpha: 0.3)
-       }
     }
     
+    let startTextField = MapsSearchField().buildSearchField()
+    let endTextField = MapsSearchField().buildSearchField()
+
     private func setupNavBarUI() {
+        
+        let stackView = UIStackView(axis: .vertical,
+                                    spacing: 12,
+                                    distribution: .fillEqually)
+        
+        startTextField.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleChooseStartPoint)))
+        endTextField.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleChooseEndPoint)))
+
+        setupTextFieldsView(firstTF: startTextField, secondTF: endTextField)
+               
+        stackView.addArrangedSubview(startTextField)
+        stackView.addArrangedSubview(endTextField)
         
         view.addSubview(navBar)
         NSLayoutConstraint.activate([
@@ -110,16 +120,7 @@ class DirectionsController: UIViewController {
             navBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 120),
         ])
        
-        let startTextField = MapsSearchField().buildSearchField()
-        let endTextField = MapsSearchField().buildSearchField()
-        setupTextFields(firstTF: startTextField, secondTF: endTextField)
-
-        let stackView = UIStackView(axis: .vertical, spacing: 12, distribution: .fillEqually)
-        stackView.addArrangedSubview(startTextField)
-        stackView.addArrangedSubview(endTextField)
-
         navBar.addSubview(stackView)
-
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: navBar.leadingAnchor, constant: 36),
             stackView.trailingAnchor.constraint(equalTo: navBar.trailingAnchor, constant: -12),
@@ -127,25 +128,42 @@ class DirectionsController: UIViewController {
             stackView.topAnchor.constraint(equalTo: navBar.safeAreaLayoutGuide.topAnchor, constant: 12),
         ])
 
-        let startImage = UIImageView(image: #imageLiteral(resourceName: "start").withTintColor(.white), contentMode: .scaleAspectFit)
-        
-        navBar.addSubview(startImage)
+        let startPointImage = UIImageView(image: #imageLiteral(resourceName: "start").withTintColor(.white), contentMode: .scaleAspectFit)
+        navBar.addSubview(startPointImage)
         NSLayoutConstraint.activate([
-            startImage.centerYAnchor.constraint(equalTo: startTextField.centerYAnchor),
-            startImage.widthAnchor.constraint(equalToConstant: 25),
-            startImage.leadingAnchor.constraint(equalTo: navBar.leadingAnchor, constant: 6)
-
+            startPointImage.centerYAnchor.constraint(equalTo: startTextField.centerYAnchor),
+            startPointImage.widthAnchor.constraint(equalToConstant: 25),
+            startPointImage.leadingAnchor.constraint(equalTo: navBar.leadingAnchor, constant: 6)
         ])
         
-        let endImage = UIImageView(image: #imageLiteral(resourceName: "end").withTintColor(.white), contentMode: .scaleAspectFit)
-        
-        navBar.addSubview(endImage)
+        let endPointImage = UIImageView(image: #imageLiteral(resourceName: "end").withTintColor(.white), contentMode: .scaleAspectFit)
+        navBar.addSubview(endPointImage)
         NSLayoutConstraint.activate([
-            endImage.centerYAnchor.constraint(equalTo: endTextField.centerYAnchor),
-            endImage.widthAnchor.constraint(equalToConstant: 25),
-            endImage.leadingAnchor.constraint(equalTo: navBar.leadingAnchor, constant: 6)
-        
+            endPointImage.centerYAnchor.constraint(equalTo: endTextField.centerYAnchor),
+            endPointImage.widthAnchor.constraint(equalToConstant: 25),
+            endPointImage.leadingAnchor.constraint(equalTo: navBar.leadingAnchor, constant: 6)
         ])
     }
+    
+    @objc private func handleChooseStartPoint () {
+        
+        let locationsVC = LocationSearchController(collectionViewLayout: UICollectionViewFlowLayout())
+        locationsVC.selectionHandler = { [weak self] mapItem in
+            self?.startTextField.text = mapItem.name
+            self?.navigationController?.popViewController(animated: true)
+        }
+        navigationController?.pushViewController(locationsVC, animated: true)
+    }
+    
+    @objc private func handleChooseEndPoint() {
+        
+        let locationsVC = LocationSearchController(collectionViewLayout: UICollectionViewFlowLayout())
+        locationsVC.selectionHandler = { [weak self] mapItem in
+            self?.endTextField.text = mapItem.name
+            self?.navigationController?.popViewController(animated: true)
+        }
+        navigationController?.pushViewController(locationsVC, animated: true)
+        }
+    
 }
 

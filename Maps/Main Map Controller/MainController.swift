@@ -12,7 +12,6 @@ import MapKit
 class MainController: UIViewController {
     
     let mapView = MKMapView()
-
     let locationManager = CLLocationManager()
 
     override func viewDidLoad() {
@@ -33,7 +32,6 @@ class MainController: UIViewController {
     private func  requestUserLocation() {
         
         locationManager.requestWhenInUseAuthorization()
-        
         locationManager.delegate = self
     }
     
@@ -107,7 +105,6 @@ class MainController: UIViewController {
     private func setupSearchUI() {
         
         view.addSubview(searchTextField)
-
         NSLayoutConstraint.activate([
            searchTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
            searchTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
