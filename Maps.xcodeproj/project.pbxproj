@@ -11,6 +11,11 @@
 		BC3E266324D2CB2D00FEC42D /* MainController+LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3E266224D2CB2D00FEC42D /* MainController+LocationManager.swift */; };
 		BC3E266524D2CBB500FEC42D /* MainController+MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3E266424D2CBB500FEC42D /* MainController+MapView.swift */; };
 		BC3E266924D2DEB300FEC42D /* DirectionsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3E266824D2DEB300FEC42D /* DirectionsController.swift */; };
+		BC3E266E24D35D8800FEC42D /* DirectionsController+MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3E266D24D35D8800FEC42D /* DirectionsController+MapView.swift */; };
+		BC3E267024D3611A00FEC42D /* UIView+NavBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3E266F24D3611A00FEC42D /* UIView+NavBar.swift */; };
+		BC3E267224D3FD6100FEC42D /* UIStackView+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3E267124D3FD6100FEC42D /* UIStackView+Init.swift */; };
+		BC3E267424D449CA00FEC42D /* NSAttributedString+CustomPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3E267324D449CA00FEC42D /* NSAttributedString+CustomPlaceholder.swift */; };
+		BC3E267624D4503D00FEC42D /* UIImageView+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3E267524D4503D00FEC42D /* UIImageView+Init.swift */; };
 		BC47B27924D042FC007C67D6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC47B27824D042FC007C67D6 /* AppDelegate.swift */; };
 		BC47B27B24D042FC007C67D6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC47B27A24D042FC007C67D6 /* SceneDelegate.swift */; };
 		BC47B27D24D042FC007C67D6 /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC47B27C24D042FC007C67D6 /* MainController.swift */; };
@@ -28,6 +33,11 @@
 		BC3E266424D2CBB500FEC42D /* MainController+MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainController+MapView.swift"; sourceTree = "<group>"; };
 		BC3E266624D2D34F00FEC42D /* Minsk.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Minsk.gpx; sourceTree = "<group>"; };
 		BC3E266824D2DEB300FEC42D /* DirectionsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsController.swift; sourceTree = "<group>"; };
+		BC3E266D24D35D8800FEC42D /* DirectionsController+MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DirectionsController+MapView.swift"; sourceTree = "<group>"; };
+		BC3E266F24D3611A00FEC42D /* UIView+NavBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+NavBar.swift"; sourceTree = "<group>"; };
+		BC3E267124D3FD6100FEC42D /* UIStackView+Init.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Init.swift"; sourceTree = "<group>"; };
+		BC3E267324D449CA00FEC42D /* NSAttributedString+CustomPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+CustomPlaceholder.swift"; sourceTree = "<group>"; };
+		BC3E267524D4503D00FEC42D /* UIImageView+Init.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Init.swift"; sourceTree = "<group>"; };
 		BC47B27524D042FC007C67D6 /* Maps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Maps.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC47B27824D042FC007C67D6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BC47B27A24D042FC007C67D6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -70,20 +80,38 @@
 			path = "MainController + Extensions";
 			sourceTree = "<group>";
 		};
-		BC3E266724D2DE9100FEC42D /* Directions */ = {
+		BC3E266724D2DE9100FEC42D /* Directions Controller */ = {
 			isa = PBXGroup;
 			children = (
 				BC3E266824D2DEB300FEC42D /* DirectionsController.swift */,
+				BC3E266B24D35D0C00FEC42D /* DirectionController + Extensions */,
 			);
-			path = Directions;
+			path = "Directions Controller";
 			sourceTree = "<group>";
 		};
-		BC3E266A24D2EA0700FEC42D /* Builders */ = {
+		BC3E266A24D2EA0700FEC42D /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
 				BC47B28C24D084B1007C67D6 /* MapsSearchField.swift */,
 			);
-			path = Builders;
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		BC3E266B24D35D0C00FEC42D /* DirectionController + Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				BC3E266D24D35D8800FEC42D /* DirectionsController+MapView.swift */,
+			);
+			path = "DirectionController + Extensions";
+			sourceTree = "<group>";
+		};
+		BC3E266C24D35D4100FEC42D /* Main Map Controller */ = {
+			isa = PBXGroup;
+			children = (
+				BC47B27C24D042FC007C67D6 /* MainController.swift */,
+				BC3E266124D2CAFE00FEC42D /* MainController + Extensions */,
+			);
+			path = "Main Map Controller";
 			sourceTree = "<group>";
 		};
 		BC47B26C24D042FC007C67D6 = {
@@ -105,10 +133,9 @@
 		BC47B27724D042FC007C67D6 /* Maps */ = {
 			isa = PBXGroup;
 			children = (
-				BC47B27C24D042FC007C67D6 /* MainController.swift */,
-				BC3E266A24D2EA0700FEC42D /* Builders */,
-				BC3E266724D2DE9100FEC42D /* Directions */,
-				BC3E266124D2CAFE00FEC42D /* MainController + Extensions */,
+				BC3E266C24D35D4100FEC42D /* Main Map Controller */,
+				BC3E266724D2DE9100FEC42D /* Directions Controller */,
+				BC3E266A24D2EA0700FEC42D /* Helpers */,
 				BC3E265E24D2BD8D00FEC42D /* Places Collection view */,
 				BC47B28E24D08CAC007C67D6 /* Utils */,
 				BC47B29224D08D30007C67D6 /* Source */,
@@ -124,6 +151,10 @@
 			isa = PBXGroup;
 			children = (
 				BC47B29024D08CCA007C67D6 /* UITextField+Insets.swift */,
+				BC3E266F24D3611A00FEC42D /* UIView+NavBar.swift */,
+				BC3E267124D3FD6100FEC42D /* UIStackView+Init.swift */,
+				BC3E267524D4503D00FEC42D /* UIImageView+Init.swift */,
+				BC3E267324D449CA00FEC42D /* NSAttributedString+CustomPlaceholder.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -209,12 +240,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC3E267424D449CA00FEC42D /* NSAttributedString+CustomPlaceholder.swift in Sources */,
 				BC47B27D24D042FC007C67D6 /* MainController.swift in Sources */,
 				BC47B27924D042FC007C67D6 /* AppDelegate.swift in Sources */,
 				BC47B29524D09930007C67D6 /* MapsPlacesCarousel.swift in Sources */,
 				BC3E266024D2BDBA00FEC42D /* PlacesCell.swift in Sources */,
+				BC3E267024D3611A00FEC42D /* UIView+NavBar.swift in Sources */,
 				BC47B29124D08CCA007C67D6 /* UITextField+Insets.swift in Sources */,
+				BC3E267224D3FD6100FEC42D /* UIStackView+Init.swift in Sources */,
 				BC3E266924D2DEB300FEC42D /* DirectionsController.swift in Sources */,
+				BC3E266E24D35D8800FEC42D /* DirectionsController+MapView.swift in Sources */,
+				BC3E267624D4503D00FEC42D /* UIImageView+Init.swift in Sources */,
 				BC3E266524D2CBB500FEC42D /* MainController+MapView.swift in Sources */,
 				BC47B27B24D042FC007C67D6 /* SceneDelegate.swift in Sources */,
 				BC47B28D24D084B1007C67D6 /* MapsSearchField.swift in Sources */,

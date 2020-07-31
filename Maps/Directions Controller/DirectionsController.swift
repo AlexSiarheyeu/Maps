@@ -9,29 +9,22 @@
 import UIKit
 import MapKit
 
-extension DirectionsController: MKMapViewDelegate{
-    
-    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        
-        let polylineRenderer = MKPolylineRenderer(overlay: overlay)
-        polylineRenderer.strokeColor = #colorLiteral(red: 0.1254901961, green: 0.5529411765, blue: 0.9529411765, alpha: 1)
-        polylineRenderer.lineWidth = 5
-        return polylineRenderer
-    }
-}
 
 class DirectionsController: UIViewController {
     
     let mapView = MKMapView()
-    let navBar = UIView().createNavigationBar()
-
+    var navBar = UIView().createNavigationBar()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         mapView.delegate = self
+        
         setupNavBarUI()
         setupMapView()
         setupRegionForMap()
         requestForDirections()
+
     }
     
     private func requestForDirections() {
@@ -93,55 +86,66 @@ class DirectionsController: UIViewController {
         
         mapView.setRegion(region, animated: true)
     }
-   
+    
+    private func setupTextFields(firstTF: UITextField, secondTF: UITextField) {
+        
+        firstTF.attributedPlaceholder = NSAttributedString().createCustomPlaceholder(text: "Start", textColor: .white)
+        secondTF.attributedPlaceholder = NSAttributedString().createCustomPlaceholder(text: "End", textColor: .white)
 
+        [firstTF, secondTF].forEach { (textField) in
+           textField.layer.cornerRadius = 5
+           textField.textColor = .white
+           textField.font = UIFont.boldSystemFont(ofSize: 16)
+           textField.backgroundColor = .init(white: 1, alpha: 0.3)
+       }
+    }
+    
     private func setupNavBarUI() {
         
         view.addSubview(navBar)
-
         NSLayoutConstraint.activate([
             navBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             navBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             navBar.topAnchor.constraint(equalTo: view.topAnchor),
-            navBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
+            navBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 120),
         ])
        
-        
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.distribution = .fillEqually
-        navBar.addSubview(stackView)
-        
-        NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: navBar.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: navBar.trailingAnchor),
-            stackView.bottomAnchor.constraint(equalTo: navBar.bottomAnchor),
-            stackView.topAnchor.constraint(equalTo: navBar.safeAreaLayoutGuide.topAnchor),
-        ])
-        
-        let startTextField = MapsSearchField().buildSearchField(placeholder: "Start", backgroundColor: .clear)
-        let endTextField = MapsSearchField().buildSearchField(placeholder: "End", backgroundColor: .clear)
+        let startTextField = MapsSearchField().buildSearchField()
+        let endTextField = MapsSearchField().buildSearchField()
+        setupTextFields(firstTF: startTextField, secondTF: endTextField)
 
+        let stackView = UIStackView(axis: .vertical, spacing: 12, distribution: .fillEqually)
         stackView.addArrangedSubview(startTextField)
         stackView.addArrangedSubview(endTextField)
 
-    }
-}
+        navBar.addSubview(stackView)
 
-extension UIView {
-    
-    func createNavigationBar() -> UIView {
-        let navigationView = UIView()
+        NSLayoutConstraint.activate([
+            stackView.leadingAnchor.constraint(equalTo: navBar.leadingAnchor, constant: 36),
+            stackView.trailingAnchor.constraint(equalTo: navBar.trailingAnchor, constant: -12),
+            stackView.bottomAnchor.constraint(equalTo: navBar.bottomAnchor, constant: -12),
+            stackView.topAnchor.constraint(equalTo: navBar.safeAreaLayoutGuide.topAnchor, constant: 12),
+        ])
+
+        let startImage = UIImageView(image: #imageLiteral(resourceName: "start").withTintColor(.white), contentMode: .scaleAspectFit)
         
-        navigationView.translatesAutoresizingMaskIntoConstraints = false
-        navigationView.backgroundColor = #colorLiteral(red: 0.1254901961, green: 0.5568627451, blue: 0.9568627451, alpha: 1)
+        navBar.addSubview(startImage)
+        NSLayoutConstraint.activate([
+            startImage.centerYAnchor.constraint(equalTo: startTextField.centerYAnchor),
+            startImage.widthAnchor.constraint(equalToConstant: 25),
+            startImage.leadingAnchor.constraint(equalTo: navBar.leadingAnchor, constant: 6)
 
-        navigationView.layer.shadowOffset = CGSize(width: 10,
-                                        height: 10)
-        navigationView.layer.shadowRadius = 5
-        navigationView.layer.shadowOpacity = 0.1
-       
-        return navigationView
+        ])
+        
+        let endImage = UIImageView(image: #imageLiteral(resourceName: "end").withTintColor(.white), contentMode: .scaleAspectFit)
+        
+        navBar.addSubview(endImage)
+        NSLayoutConstraint.activate([
+            endImage.centerYAnchor.constraint(equalTo: endTextField.centerYAnchor),
+            endImage.widthAnchor.constraint(equalToConstant: 25),
+            endImage.leadingAnchor.constraint(equalTo: navBar.leadingAnchor, constant: 6)
+        
+        ])
     }
 }
+
