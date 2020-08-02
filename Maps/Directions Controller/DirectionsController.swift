@@ -8,7 +8,7 @@
 
 import UIKit
 import MapKit
-
+import JGProgressHUD
 
 class DirectionsController: UIViewController {
     
@@ -23,7 +23,7 @@ class DirectionsController: UIViewController {
         setupNavBarUI()
         setupMapView()
         setupRegionForMap()
-        requestForDirections()
+        //requestForDirections()
     
     }
     
@@ -36,17 +36,20 @@ class DirectionsController: UIViewController {
     
     private func requestForDirections() {
         
+        let progressIndicator = JGProgressHUD(style: .dark)
+        progressIndicator.textLabel.text = "Routing..."
+        progressIndicator.show(in: view)
+        
         let request = MKDirections.Request()
         
-        let startingPlacemark = MKPlacemark(coordinate: .init(latitude: 53.893009, longitude: 27.567444))
-        let endingPlacemark = MKPlacemark(coordinate: .init(latitude: 52.097622, longitude: 23.734051))
-        
-        request.source = .init(placemark: startingPlacemark)
-        request.destination = .init(placemark: endingPlacemark)
+        request.source = startMapItem
+        request.destination = endMapItem
         
         request.requestsAlternateRoutes = true
         let directions = MKDirections(request: request)
         directions.calculate { (response, error) in
+            
+            progressIndicator.dismiss(animated: true)
             
             if let error = error {
                 print("Failed to find routing info", error)
@@ -95,8 +98,9 @@ class DirectionsController: UIViewController {
         secondTF.attributedPlaceholder = NSAttributedString().createCustomPlaceholder(text: "End", textColor: .white)
     }
     
-    let startTextField = MapsSearchField().buildSearchField()
-    let endTextField = MapsSearchField().buildSearchField()
+    let startTextField = UITextField.init(placeholder: "Start point", backgroundColor: .init(white: 1, alpha: 0.3), cornerRadius: 5, textColor: .white, font: .boldSystemFont(ofSize: 16))
+    
+    let endTextField = UITextField.init(placeholder: "Start point", backgroundColor: .init(white: 1, alpha: 0.3), cornerRadius: 5, textColor: .white, font: .boldSystemFont(ofSize: 16))
 
     private func setupNavBarUI() {
         
@@ -145,11 +149,17 @@ class DirectionsController: UIViewController {
         ])
     }
     
+    var startMapItem: MKMapItem?
+    var endMapItem: MKMapItem?
+    
     @objc private func handleChooseStartPoint () {
         
         let locationsVC = LocationSearchController(collectionViewLayout: UICollectionViewFlowLayout())
         locationsVC.selectionHandler = { [weak self] mapItem in
             self?.startTextField.text = mapItem.name
+            
+            self?.startMapItem = mapItem
+            self?.refreshMap()
             self?.navigationController?.popViewController(animated: true)
         }
         navigationController?.pushViewController(locationsVC, animated: true)
@@ -160,10 +170,39 @@ class DirectionsController: UIViewController {
         let locationsVC = LocationSearchController(collectionViewLayout: UICollectionViewFlowLayout())
         locationsVC.selectionHandler = { [weak self] mapItem in
             self?.endTextField.text = mapItem.name
+            
+            self?.endMapItem = mapItem
+            self?.refreshMap()
+        
             self?.navigationController?.popViewController(animated: true)
         }
         navigationController?.pushViewController(locationsVC, animated: true)
         }
     
+    private func refreshMap() {
+        
+        mapView.removeAnnotations(mapView.annotations)
+        mapView.removeOverlays(mapView.overlays)
+        
+        if let startMapItem = startMapItem {
+            
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = startMapItem.placemark.coordinate
+            annotation.title = startMapItem.name
+            mapView.addAnnotation(annotation)
+        }
+        
+        if let endMapItem = endMapItem {
+        
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = endMapItem.placemark.coordinate
+            annotation.title = endMapItem.name
+            mapView.addAnnotation(annotation)
+        }
+        
+        requestForDirections()
+        mapView.showAnnotations(mapView.annotations, animated: false)
+
+    }
 }
 

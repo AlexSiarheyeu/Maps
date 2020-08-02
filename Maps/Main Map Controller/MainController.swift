@@ -101,7 +101,7 @@ class MainController: UIViewController {
         }
     }
 
-    let searchTextField = MapsSearchField().buildSearchField()
+    let searchTextField = UITextField.init()
     private func setupSearchUI() {
         
         view.addSubview(searchTextField)
