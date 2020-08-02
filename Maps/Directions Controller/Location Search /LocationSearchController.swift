@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import Combine
 
 class LocationSearchController: UICollectionViewController {
     
@@ -15,13 +16,7 @@ class LocationSearchController: UICollectionViewController {
     let navBar = UIView().createNavigationBar()
     
     let searchTextField: UITextField = {
-        let tf = UITextField.init(  placeholder: "Search location",
-                                    backgroundColor: .white,
-                                    cornerRadius: 5,
-                                    textColor: .black,
-                                    font: UIFont.boldSystemFont(ofSize: 16),
-                                    borderColor: UIColor.gray,
-                                    borderWidth: 1)
+        let tf = UITextField.init(placeholder: "Search location")
         return tf
     }()
     
@@ -34,13 +29,19 @@ class LocationSearchController: UICollectionViewController {
         collectionView.addGestureRecognizer(UISwipeGestureRecognizer(target: self, action: #selector(dismissSearchController)))
         collectionView.backgroundColor = .white
         searchTextField.becomeFirstResponder()
+        
         setupSearchListener()
         setupSearchNavBar()
+        
     }
     
     @objc func dismissSearchController() {
         navigationController?.popViewController(animated: true)
     }
+    
+    
+        
+    
     
     private func setupSearchNavBar() {
         
@@ -81,13 +82,20 @@ class LocationSearchController: UICollectionViewController {
         selectionHandler?(mapItem)
     }
     
+    var listener: AnyCancellable!
+    
     private func setupSearchListener() {
-        searchTextField.addTarget(self, action: #selector(searchInputLocation), for: .editingDidEndOnExit)
+        
+        listener = NotificationCenter.default
+                    .publisher(for: UITextField.textDidChangeNotification, object:  searchTextField)
+                    .debounce(for: .milliseconds(500), scheduler: RunLoop.main)
+                    .sink(receiveValue: { [weak self] (_) in
+                            self?.performLocalSearch()
+                            })
+        //listener.cancel()
     }
        
-    @objc func searchInputLocation() {
-        performLocalSearch()
-    }
+
     
     private func performLocalSearch() {
         let request = MKLocalSearch.Request()

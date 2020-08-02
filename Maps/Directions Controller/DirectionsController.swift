@@ -23,16 +23,43 @@ class DirectionsController: UIViewController {
         setupNavBarUI()
         setupMapView()
         setupRegionForMap()
-        //requestForDirections()
-    
+        setupShowRouteButton()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         navigationController?.navigationBar.isHidden = true
-
     }
+    
+    private func setupShowRouteButton() {
+        
+        let routeButton = UIButton(type: .system)
+        routeButton.translatesAutoresizingMaskIntoConstraints = false
+        routeButton.setTitle("Route", for: .normal)
+        routeButton.setTitleColor(.black, for: .normal)
+        routeButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        routeButton.backgroundColor = .white
+        
+        routeButton.addTarget(self, action: #selector(handleShowRoute), for: .touchUpInside)
+        view.addSubview(routeButton)
+        
+        NSLayoutConstraint.activate([
+            routeButton.leadingAnchor.constraint(equalTo: mapView.leadingAnchor, constant: 16),
+            routeButton.trailingAnchor.constraint(equalTo: mapView.trailingAnchor, constant: -16),
+            routeButton.bottomAnchor.constraint(equalTo: mapView.bottomAnchor, constant: -60),
+        ])
+    }
+
+    @objc  func handleShowRoute() {
+        let vc = RoutesController()
+        vc.transitioningDelegate = self
+        vc.modalPresentationStyle = .custom
+        //routesController.mapItems = self.currentlyShowingRoute?.steps.filter({!$0.instructions.isEmpty}) ?? []
+        present(vc, animated: true)
+    }
+    
+    
+    var currentlyShowingRoute: MKRoute?
     
     private func requestForDirections() {
         
@@ -56,10 +83,15 @@ class DirectionsController: UIViewController {
                 return
             }
             
-            guard let route = response?.routes.first else { return }
+            if let firstRoute = response?.routes.first {
+                self.mapView.addOverlay(firstRoute.polyline)
+            }
             //print(route.expectedTravelTime) print(route.distance) print(route.name) print(route.steps)
-            self.mapView.addOverlay(route.polyline)
+            
+            self.currentlyShowingRoute = response?.routes.first
+
         }
+        
     }
     
     private func setupMapView() {
