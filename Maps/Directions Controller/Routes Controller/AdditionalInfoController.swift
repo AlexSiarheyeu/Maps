@@ -12,39 +12,20 @@ import MapKit
 class AdditionalInfoController: UIViewController, UIViewControllerTransitioningDelegate {
     
     var mapItems: MKRoute? = nil {
-
         didSet {
+            
             guard let mapItem = mapItems else {return}
-            let kmDistance = mapItem.distance/1000
-            let formatKmDistance = String(format: "%.2f", kmDistance)
+            
+                let kmDistance = mapItem.distance/1000
+                let formatKmDistance = String(format: "%.2f", kmDistance)
            
-            let attributedText = NSMutableAttributedString(string: " Distance ", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)])
-            attributedText.append(NSMutableAttributedString(string: "                                                "))
-            attributedText.append(NSAttributedString(string: " \(formatKmDistance) km", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16)]))
-            distanceLabel.attributedText = attributedText
+            distanceLabel.attributedText = NSAttributedString().generateAttributedString(title: "Distance  ", description: "\(formatKmDistance) km")
             
-            var timeString = ""
-            if mapItem.expectedTravelTime > 3600 {
-                let hours = Int(mapItem.expectedTravelTime / 60 / 60)
-                let minutes = Int(mapItem.expectedTravelTime.truncatingRemainder(dividingBy: 60 * 60)/60)
-                timeString = String(format: "%d hr %d min", hours, minutes)
-            } else {
-                let time = Int(mapItem.expectedTravelTime / 60)
-                timeString = String(format: "%d min", time)
-            }
+                let timeString = MKMapItem().generateRepresentableTime(route: mapItem)
+           
+            travelTimeLabel.attributedText = NSAttributedString().generateAttributedString(title: "Estimated time  ", description: "\(timeString)")
             
-            let attributedText1 = NSMutableAttributedString(string: " Estimated time ", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)])
-            attributedText1.append(NSMutableAttributedString(string: "                                       "))
-            attributedText1.append(NSAttributedString(string: " \(timeString) ", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16)]))
-            
-            travelTimeLabel.attributedText = attributedText1
-            
-            let attributedText2 = NSMutableAttributedString(string: " End point ", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)])
-            attributedText2.append(NSMutableAttributedString(string: "                                                "))
-            attributedText2.append(NSAttributedString(string: " \(mapItem.name) ", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16)]))
-            
-            destinationStreetLabel.attributedText = attributedText2
-            
+            destinationStreetLabel.attributedText = NSAttributedString().generateAttributedString(title: "End point  ", description: "\(mapItem.name)")
         }
     }
     
@@ -80,9 +61,23 @@ class AdditionalInfoController: UIViewController, UIViewControllerTransitioningD
         
         view.roundedTopCorners()
         view.backgroundColor = .white
+       
+        setupSwipeGestureForController()
+        setupStackView()
+    }
+    
+    @objc private func handleDismiss() {
+        dismiss(animated: true)
+    }
+    
+    private func setupSwipeGestureForController() {
+        
         let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleDismiss))
         swipeGesture.direction = .down
         view.addGestureRecognizer(swipeGesture)
+    }
+    
+    private func setupStackView() {
         
         view.addSubview(stackView)
         stackView.addArrangedSubview(distanceLabel)
@@ -95,10 +90,6 @@ class AdditionalInfoController: UIViewController, UIViewControllerTransitioningD
             stackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
             stackView.heightAnchor.constraint(equalToConstant: view.frame.height*0.25),
         ])
-    }
-    
-    @objc private func handleDismiss() {
-        dismiss(animated: true)
     }
 }
 

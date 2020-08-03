@@ -33,14 +33,13 @@ class DirectionsController: UIViewController {
     
     private func setupShowRouteButton() {
         
-        let routeButton = UIButton(type: .system)
-        routeButton.translatesAutoresizingMaskIntoConstraints = false
-        routeButton.setTitle("Route", for: .normal)
-        routeButton.setTitleColor(.black, for: .normal)
-        routeButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-        routeButton.backgroundColor = .white
-        
+        let routeButton = UIButton(title: "Route",
+                                   tintColor: .black,
+                                   font: UIFont.boldSystemFont(ofSize: 16),
+                                   backgroundColor: .white)
+
         routeButton.addTarget(self, action: #selector(handleShowRoute), for: .touchUpInside)
+        
         view.addSubview(routeButton)
         
         NSLayoutConstraint.activate([
@@ -55,14 +54,8 @@ class DirectionsController: UIViewController {
         vc.transitioningDelegate = self
         vc.modalPresentationStyle = .custom
         vc.mapItems = self.currentlyShowingRoute
-        //vc.nameLabel.text =
-    
-            
-        
-            //.expectedTravelTime.description
         present(vc, animated: true)
     }
-    
     
     var currentlyShowingRoute: MKRoute?
     
@@ -91,12 +84,9 @@ class DirectionsController: UIViewController {
             if let firstRoute = response?.routes.first {
                 self.mapView.addOverlay(firstRoute.polyline)
             }
-            //print(route.expectedTravelTime) print(route.distance) print(route.name) print(route.steps)
             
             self.currentlyShowingRoute = response?.routes.first
-
         }
-        
     }
     
     private func setupMapView() {
