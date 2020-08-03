@@ -51,10 +51,15 @@ class DirectionsController: UIViewController {
     }
 
     @objc  func handleShowRoute() {
-        let vc = RoutesController()
+        let vc = AdditionalInfoController()
         vc.transitioningDelegate = self
         vc.modalPresentationStyle = .custom
-        //routesController.mapItems = self.currentlyShowingRoute?.steps.filter({!$0.instructions.isEmpty}) ?? []
+        vc.mapItems = self.currentlyShowingRoute
+        //vc.nameLabel.text =
+    
+            
+        
+            //.expectedTravelTime.description
         present(vc, animated: true)
     }
     
@@ -126,13 +131,28 @@ class DirectionsController: UIViewController {
     
     private func setupTextFieldsView(firstTF: UITextField, secondTF: UITextField) {
         
-        firstTF.attributedPlaceholder = NSAttributedString().createCustomPlaceholder(text: "Start", textColor: .white)
-        secondTF.attributedPlaceholder = NSAttributedString().createCustomPlaceholder(text: "End", textColor: .white)
+        firstTF.attributedPlaceholder = NSAttributedString()
+                                            .createCustomPlaceholder(text: "Start",
+                                                                 textColor: .white)
+        
+        secondTF.attributedPlaceholder = NSAttributedString()
+                                            .createCustomPlaceholder(text: "End",
+                                                                 textColor: .white)
     }
     
-    let startTextField = UITextField.init(placeholder: "Start point", backgroundColor: .init(white: 1, alpha: 0.3), cornerRadius: 5, textColor: .white, font: .boldSystemFont(ofSize: 16))
+    let startTextField = UITextField
+                            .init(placeholder: "Start point",
+                                  backgroundColor: .init(white: 1, alpha: 0.3),
+                                  cornerRadius: 5,
+                                  textColor: .white,
+                                  font: .boldSystemFont(ofSize: 16))
     
-    let endTextField = UITextField.init(placeholder: "Start point", backgroundColor: .init(white: 1, alpha: 0.3), cornerRadius: 5, textColor: .white, font: .boldSystemFont(ofSize: 16))
+    let endTextField = UITextField
+                            .init(placeholder: "Start point",
+                                  backgroundColor: .init(white: 1, alpha: 0.3),
+                                  cornerRadius: 5,
+                                  textColor: .white,
+                                  font: .boldSystemFont(ofSize: 16))
 
     private func setupNavBarUI() {
         
@@ -140,10 +160,14 @@ class DirectionsController: UIViewController {
                                     spacing: 12,
                                     distribution: .fillEqually)
         
-        startTextField.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleChooseStartPoint)))
-        endTextField.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleChooseEndPoint)))
+        startTextField.addGestureRecognizer(UITapGestureRecognizer(target: self,
+                                                                   action: #selector(handleChooseStartPoint)))
+        
+        endTextField.addGestureRecognizer(UITapGestureRecognizer(target: self,
+                                                                 action: #selector(handleChooseEndPoint)))
 
-        setupTextFieldsView(firstTF: startTextField, secondTF: endTextField)
+        setupTextFieldsView(firstTF: startTextField,
+                            secondTF: endTextField)
                
         stackView.addArrangedSubview(startTextField)
         stackView.addArrangedSubview(endTextField)
