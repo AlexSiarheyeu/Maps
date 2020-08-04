@@ -13,9 +13,6 @@ extension DirectionsController: UIViewControllerTransitioningDelegate {
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         return HalfPresentationController(presentedViewController: presented, presenting: presenting)
     }
-    
-
-    
 }
 
 class HalfPresentationController: UIPresentationController {

@@ -11,6 +11,8 @@ import MapKit
 
 class AdditionalInfoController: UIViewController, UIViewControllerTransitioningDelegate {
     
+    //MARK: Properties
+
     var mapItems: MKRoute? = nil {
         didSet {
             
@@ -56,6 +58,8 @@ class AdditionalInfoController: UIViewController, UIViewControllerTransitioningD
         return label
     }()
     
+    //MARK: View controller lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -66,15 +70,17 @@ class AdditionalInfoController: UIViewController, UIViewControllerTransitioningD
         setupStackView()
     }
     
-    @objc private func handleDismiss() {
-        dismiss(animated: true)
-    }
+    //MARK: Private methods and selectors implementationn
     
     private func setupSwipeGestureForController() {
         
         let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleDismiss))
         swipeGesture.direction = .down
         view.addGestureRecognizer(swipeGesture)
+    }
+    
+    @objc private func handleDismiss() {
+        dismiss(animated: true)
     }
     
     private func setupStackView() {

@@ -11,8 +11,18 @@ import MapKit
 
 class MainController: UIViewController {
     
+    //MARK: Properties
+    
     let mapView = MKMapView()
     let locationManager = CLLocationManager()
+    let searchTextField = UITextField(placeholder: "Search",
+                                      backgroundColor: .white,
+                                      cornerRadius: 5,
+                                      textColor: .black,
+                                      font: UIFont.boldSystemFont(ofSize: 16),
+                                      borderWidth: 1)
+
+    //MARK: View controller lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,10 +34,39 @@ class MainController: UIViewController {
         setupRegionForMap()
         setupAnnotationsForMap()
         setupSearchUI()
-        setupLocationCarousel()
         requestUserLocation()
-        
+        setupGetDirectionsButton()
    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = true
+    }
+    
+    //MARK: Private methods and selectors implementationn
+    
+    private func setupGetDirectionsButton() {
+        
+        let getDirections = UIButton(title: "Get directions to",
+                                    tintColor: .black,
+                                    font: UIFont.boldSystemFont(ofSize: 16),
+                                    backgroundColor: .white)
+        
+        getDirections.addTarget(self, action: #selector(showDirectionsController), for: .touchUpInside)
+        
+        view.addSubview(getDirections)
+        NSLayoutConstraint.activate([
+            getDirections.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            getDirections.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            getDirections.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -36),
+            getDirections.heightAnchor.constraint(equalToConstant: 50)
+        ])
+    }
+    
+    @objc func showDirectionsController() {
+        let directionsController = DirectionsController()
+        navigationController?.pushViewController(directionsController, animated: true)
+    }
     
     private func  requestUserLocation() {
         
@@ -53,11 +92,11 @@ class MainController: UIViewController {
         let location = CLLocationCoordinate2D(
                         latitude: 53.893009,
                         longitude: 27.567444)
-        
+
         let span = MKCoordinateSpan(
                         latitudeDelta: 0.5,
                         longitudeDelta: 0.5)
-        
+
         let region = MKCoordinateRegion(
                         center: location,
                         span: span)
@@ -69,46 +108,13 @@ class MainController: UIViewController {
         mapView.showAnnotations(self.mapView.annotations, animated: true)
     }
     
-    let controllerCarousel = MapsCollectionViewCarousel()
-    private func performLocalSearch() {
-        
-        let request = MKLocalSearch.Request()
-        request.naturalLanguageQuery = searchTextField.text
-        request.region = mapView.region
-        let localSearch = MKLocalSearch(request: request)
-        localSearch.start { (response, error) in
-
-            if let error = error {
-                print("Failed local search", error)
-                return
-            }
-            
-            //success
-            self.mapView.removeAnnotations(self.mapView.annotations)
-            
-            response?.mapItems.forEach({ [weak self] (mapItem) in
-                
-                let annotation =  MKPointAnnotation()
-                annotation.coordinate = mapItem.placemark.coordinate
-                annotation.title = mapItem.name
-                self?.mapView.addAnnotation(annotation)
-               
-                //self?.controllerCarousel.items.append(mapItem)
-                
-                })
-            
-            self.mapView.showAnnotations(self.mapView.annotations, animated: true)
-        }
-    }
-
-    let searchTextField = UITextField.init()
     private func setupSearchUI() {
         
         view.addSubview(searchTextField)
         NSLayoutConstraint.activate([
            searchTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
            searchTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-           searchTextField.topAnchor.constraint(equalTo: view.topAnchor, constant: 34),
+           searchTextField.topAnchor.constraint(equalTo: view.topAnchor, constant: 40),
            searchTextField.heightAnchor.constraint(equalToConstant: 50)
        ])
         
@@ -119,20 +125,6 @@ class MainController: UIViewController {
     
     @objc func handleSearchChanges() {
         performLocalSearch()
-    }
-    
-    private func setupLocationCarousel() {
-        
-        let collectionCarousel = MapsCollectionViewCarousel()
-        
-        mapView.addSubview(collectionCarousel)
-        
-        NSLayoutConstraint.activate([
-            collectionCarousel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionCarousel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionCarousel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -34),
-            collectionCarousel.heightAnchor.constraint(equalToConstant: 150)
-        ])
     }
 }
 

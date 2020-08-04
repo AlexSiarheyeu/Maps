@@ -17,7 +17,7 @@ extension MainController: CLLocationManagerDelegate {
 
         case .authorizedWhenInUse:
             locationManager.startUpdatingLocation()
-       default:
+        default:
             break
         }
     }
@@ -27,7 +27,7 @@ extension MainController: CLLocationManagerDelegate {
         guard let firstLocation = locations.first else { return }
         
         mapView.setRegion(.init(center: firstLocation.coordinate,
-                                span: .init(latitudeDelta: 0.1,
-                                            longitudeDelta: 0.1)), animated: false)
+                                span: .init(latitudeDelta: 0.2,
+                                            longitudeDelta: 0.2)), animated: false)
     }
 }

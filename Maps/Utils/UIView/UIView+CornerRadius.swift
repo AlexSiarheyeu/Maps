@@ -11,8 +11,20 @@ import UIKit
 extension UIView{
     
     func roundedTopCorners(){
+        
         let bezierPath = UIBezierPath(roundedRect: bounds,
                                       byRoundingCorners: [.topLeft , .topRight],
+                                      cornerRadii: CGSize(width: 36, height: 36))
+        let maskLayer = CAShapeLayer()
+        maskLayer.frame = bounds
+        maskLayer.path = bezierPath.cgPath
+        layer.mask = maskLayer
+    }
+    
+    func roundedBottomCorners(){
+        
+        let bezierPath = UIBezierPath(roundedRect: bounds,
+                                      byRoundingCorners: [.bottomLeft , .bottomRight],
                                       cornerRadii: CGSize(width: 36, height: 36))
         let maskLayer = CAShapeLayer()
         maskLayer.frame = bounds

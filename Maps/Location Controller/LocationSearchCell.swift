@@ -10,6 +10,8 @@ import UIKit
 
 class LocationSearchCell: UICollectionViewCell {
     
+    //MARK: Properties
+
     let nameLabel: UILabel = {
         let name = UILabel()
         name.translatesAutoresizingMaskIntoConstraints = false
@@ -24,6 +26,8 @@ class LocationSearchCell: UICollectionViewCell {
         return address
     }()
     
+    //MARK: Init
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         

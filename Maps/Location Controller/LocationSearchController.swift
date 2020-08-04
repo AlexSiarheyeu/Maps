@@ -12,6 +12,8 @@ import Combine
 
 class LocationSearchController: UICollectionViewController {
     
+    //MARK: Properties
+
     var items = [MKMapItem]()
     let navBar = UIView().createNavigationBar()
     
@@ -20,6 +22,7 @@ class LocationSearchController: UICollectionViewController {
         return tf
     }()
     
+    //MARK: View controller lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,21 +31,19 @@ class LocationSearchController: UICollectionViewController {
         collectionView.register(LocationSearchCell.self, forCellWithReuseIdentifier: "cellId")
         collectionView.addGestureRecognizer(UISwipeGestureRecognizer(target: self, action: #selector(dismissSearchController)))
         collectionView.backgroundColor = .white
+        
         searchTextField.becomeFirstResponder()
         
         setupSearchListener()
         setupSearchNavBar()
-        
     }
     
+    //MARK: Private methods and selectors implementationn
+
     @objc func dismissSearchController() {
         navigationController?.popViewController(animated: true)
     }
-    
-    
-        
-    
-    
+
     private func setupSearchNavBar() {
         
         navBar.addSubview(searchTextField)
@@ -63,6 +64,7 @@ class LocationSearchController: UICollectionViewController {
         ])
     }
     
+    //MARK: - Setup Collection view
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellId", for: indexPath) as! LocationSearchCell
@@ -83,7 +85,6 @@ class LocationSearchController: UICollectionViewController {
     }
     
     var listener: AnyCancellable!
-    
     private func setupSearchListener() {
         
         listener = NotificationCenter.default
@@ -92,10 +93,7 @@ class LocationSearchController: UICollectionViewController {
                     .sink(receiveValue: { [weak self] (_) in
                             self?.performLocalSearch()
                             })
-        //listener.cancel()
     }
-       
-
     
     private func performLocalSearch() {
         let request = MKLocalSearch.Request()
@@ -114,6 +112,8 @@ class LocationSearchController: UICollectionViewController {
         }
     }
 }
+
+    //MARK: UICollectionViewDelegateFlowLayout
 
 extension LocationSearchController: UICollectionViewDelegateFlowLayout {
     

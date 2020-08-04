@@ -12,9 +12,30 @@ import JGProgressHUD
 
 class DirectionsController: UIViewController {
     
+    //MARK: Properties
+
     let mapView = MKMapView()
     var navBar = UIView().createNavigationBar()
+    var currentlyShowingRoute: MKRoute?
+    var startMapItem: MKMapItem?
+    var endMapItem: MKMapItem?
     
+    let startTextField = UITextField
+                              .init(placeholder: "Start point",
+                                    backgroundColor: .init(white: 1, alpha: 0.3),
+                                    cornerRadius: 5,
+                                    textColor: .white,
+                                    font: .boldSystemFont(ofSize: 16))
+      
+    let endTextField = UITextField
+                              .init(placeholder: "Start point",
+                                    backgroundColor: .init(white: 1, alpha: 0.3),
+                                    cornerRadius: 5,
+                                    textColor: .white,
+                                    font: .boldSystemFont(ofSize: 16))
+    
+    //MARK: View controller lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -22,7 +43,6 @@ class DirectionsController: UIViewController {
         
         setupNavBarUI()
         setupMapView()
-        setupRegionForMap()
         setupShowRouteButton()
     }
     
@@ -31,6 +51,8 @@ class DirectionsController: UIViewController {
         navigationController?.navigationBar.isHidden = true
     }
     
+    //MARK: Private methods and selectors implementationn
+
     private func setupShowRouteButton() {
         
         let routeButton = UIButton(title: "Route",
@@ -56,8 +78,6 @@ class DirectionsController: UIViewController {
         vc.mapItems = self.currentlyShowingRoute
         present(vc, animated: true)
     }
-    
-    var currentlyShowingRoute: MKRoute?
     
     private func requestForDirections() {
         
@@ -102,23 +122,6 @@ class DirectionsController: UIViewController {
         ])
     }
     
-    private func setupRegionForMap() {
-        
-        let location = CLLocationCoordinate2D(
-                        latitude: 53.893009,
-                        longitude: 27.567444)
-        
-        let span = MKCoordinateSpan(
-                        latitudeDelta: 0.5,
-                        longitudeDelta: 0.5)
-        
-        let region = MKCoordinateRegion(
-                        center: location,
-                        span: span)
-        
-        mapView.setRegion(region, animated: true)
-    }
-    
     private func setupTextFieldsView(firstTF: UITextField, secondTF: UITextField) {
         
         firstTF.attributedPlaceholder = NSAttributedString()
@@ -129,20 +132,6 @@ class DirectionsController: UIViewController {
                                             .createCustomPlaceholder(text: "End",
                                                                  textColor: .white)
     }
-    
-    let startTextField = UITextField
-                            .init(placeholder: "Start point",
-                                  backgroundColor: .init(white: 1, alpha: 0.3),
-                                  cornerRadius: 5,
-                                  textColor: .white,
-                                  font: .boldSystemFont(ofSize: 16))
-    
-    let endTextField = UITextField
-                            .init(placeholder: "Start point",
-                                  backgroundColor: .init(white: 1, alpha: 0.3),
-                                  cornerRadius: 5,
-                                  textColor: .white,
-                                  font: .boldSystemFont(ofSize: 16))
 
     private func setupNavBarUI() {
         
@@ -163,6 +152,7 @@ class DirectionsController: UIViewController {
         stackView.addArrangedSubview(endTextField)
         
         view.addSubview(navBar)
+        
         NSLayoutConstraint.activate([
             navBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             navBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -171,6 +161,7 @@ class DirectionsController: UIViewController {
         ])
        
         navBar.addSubview(stackView)
+        
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: navBar.leadingAnchor, constant: 36),
             stackView.trailingAnchor.constraint(equalTo: navBar.trailingAnchor, constant: -12),
@@ -178,16 +169,22 @@ class DirectionsController: UIViewController {
             stackView.topAnchor.constraint(equalTo: navBar.safeAreaLayoutGuide.topAnchor, constant: 12),
         ])
 
-        let startPointImage = UIImageView(image: #imageLiteral(resourceName: "start").withTintColor(.white), contentMode: .scaleAspectFit)
+        let startPointImage = UIImageView(image: #imageLiteral(resourceName: "start").withTintColor(.white),
+                                          contentMode: .scaleAspectFit)
+        
         navBar.addSubview(startPointImage)
+        
         NSLayoutConstraint.activate([
             startPointImage.centerYAnchor.constraint(equalTo: startTextField.centerYAnchor),
             startPointImage.widthAnchor.constraint(equalToConstant: 25),
             startPointImage.leadingAnchor.constraint(equalTo: navBar.leadingAnchor, constant: 6)
         ])
         
-        let endPointImage = UIImageView(image: #imageLiteral(resourceName: "end").withTintColor(.white), contentMode: .scaleAspectFit)
+        let endPointImage = UIImageView(image: #imageLiteral(resourceName: "end").withTintColor(.white),
+                                        contentMode: .scaleAspectFit)
+        
         navBar.addSubview(endPointImage)
+        
         NSLayoutConstraint.activate([
             endPointImage.centerYAnchor.constraint(equalTo: endTextField.centerYAnchor),
             endPointImage.widthAnchor.constraint(equalToConstant: 25),
@@ -195,12 +192,10 @@ class DirectionsController: UIViewController {
         ])
     }
     
-    var startMapItem: MKMapItem?
-    var endMapItem: MKMapItem?
-    
     @objc private func handleChooseStartPoint () {
         
         let locationsVC = LocationSearchController(collectionViewLayout: UICollectionViewFlowLayout())
+        
         locationsVC.selectionHandler = { [weak self] mapItem in
             self?.startTextField.text = mapItem.name
             
@@ -214,12 +209,12 @@ class DirectionsController: UIViewController {
     @objc private func handleChooseEndPoint() {
         
         let locationsVC = LocationSearchController(collectionViewLayout: UICollectionViewFlowLayout())
+        
         locationsVC.selectionHandler = { [weak self] mapItem in
             self?.endTextField.text = mapItem.name
             
             self?.endMapItem = mapItem
             self?.refreshMap()
-        
             self?.navigationController?.popViewController(animated: true)
         }
         navigationController?.pushViewController(locationsVC, animated: true)
@@ -248,7 +243,6 @@ class DirectionsController: UIViewController {
         
         requestForDirections()
         mapView.showAnnotations(mapView.annotations, animated: false)
-
     }
 }
 
